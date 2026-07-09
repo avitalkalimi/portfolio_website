@@ -1,0 +1,8 @@
+.DS_Store
+Thumbs.db
+desktop.ini
+*.swp
+.vscode/
+
+# Design handoff prototype — reference-only, not part of the shipped site
+תיק עבודות אישי/
