@@ -23,7 +23,17 @@
     var mount = document.getElementById("site-nav");
     if (!mount) return;
 
-    var brand = el("a", { href: data.nav.brand.href, className: "site-nav__brand" }, [data.nav.brand.label]);
+    var brandContent = data.nav.brand.label;
+    if (data.nav.brand.logo) {
+      // Only very narrow screens drop the "| SYSTEMS" part and show the compact mark.
+      brandContent = el("picture", null, [
+        data.nav.brand.logoCompact
+          ? el("source", { media: "(max-width: 480px)", srcset: data.nav.brand.logoCompact })
+          : null,
+        el("img", { src: data.nav.brand.logo, alt: data.nav.brand.label, className: "site-nav__logo" })
+      ]);
+    }
+    var brand = el("a", { href: data.nav.brand.href, className: "site-nav__brand" }, [brandContent]);
 
     var links = data.nav.links.map(function (link) {
       var isActive = link.id === currentPage;

@@ -1,4 +1,4 @@
-# Avital Kalimi — Portfolio
+# A&K — Portfolio
 
 Personal data portfolio site: a homepage plus five topic pages (Business Intelligence, GIS, Computer Vision, LLM, SQL).
 

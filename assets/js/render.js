@@ -32,7 +32,29 @@
     ]);
     var sub = el("p", { className: "hero__sub" }, [home.subline]);
     var scroll = el("a", { href: "#work", className: "hero__scroll" }, ["↓ Selected work"]);
-    return el("div", { className: "hero" }, [title, sub, scroll]);
+    var hero = el("div", { className: "hero" }, [title, sub, scroll]);
+    return el("div", { className: "hero-band" }, [renderHeroSlides(home), hero]);
+  }
+
+  // Rotating background pictures behind the hero, cross-faded every heroIntervalMs.
+  function renderHeroSlides(home) {
+    var images = home.heroImages || [];
+    if (!images.length) return null;
+    var slides = images.map(function (src, i) {
+      var slide = el("div", { className: "hero-slide" + (i === 0 ? " hero-slide--active" : "") }, []);
+      slide.style.backgroundImage = "url('" + src + "')";
+      return slide;
+    });
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (slides.length > 1 && !reduceMotion) {
+      var current = 0;
+      setInterval(function () {
+        slides[current].classList.remove("hero-slide--active");
+        current = (current + 1) % slides.length;
+        slides[current].classList.add("hero-slide--active");
+      }, home.heroIntervalMs || 5000);
+    }
+    return el("div", { className: "hero-slides", "aria-hidden": "true" }, slides);
   }
 
   function renderSelectedWork() {
@@ -65,6 +87,21 @@
     return el("div", { className: "areas-section" }, [heading, grid]);
   }
 
+  function renderCustomers() {
+    var customers = data.home.customers;
+    if (!customers || !customers.logos.length) return null;
+    var tiles = customers.logos.map(function (logo) {
+      return el("div", { className: "customer-tile" }, [
+        el("img", { src: logo.image, alt: logo.name, title: logo.name, loading: "lazy" }, [])
+      ]);
+    });
+    return el("div", { className: "customers-section", id: "customers" }, [
+      el("div", { className: "section-label" }, [customers.label]),
+      el("h2", {}, [customers.heading]),
+      el("div", { className: "customer-grid" }, tiles)
+    ]);
+  }
+
   function renderAbout() {
     var about = data.home.about;
     var photo = renderImageSlot("portrait", about.photo, about.photoAlt, true);
@@ -95,11 +132,46 @@
     return el("div", { className: "about-section", id: "about" }, [photo, right]);
   }
 
+  function renderContact() {
+    var contact = data.home.contact;
+    if (!contact || !contact.email) return null;
+
+    var nameInput = el("input", { type: "text", id: "contact-name", name: "name", autocomplete: "name", required: "" }, []);
+    var messageInput = el("textarea", { id: "contact-message", name: "message", rows: "5", required: "" }, []);
+    var form = el("form", { className: "contact-form" }, [
+      el("label", { "for": "contact-name" }, ["Your name"]),
+      nameInput,
+      el("label", { "for": "contact-message" }, ["Message"]),
+      messageInput,
+      el("button", { type: "submit", className: "contact-form__submit" }, [contact.buttonLabel])
+    ]);
+    // No backend: hand the message to the visitor's own email app.
+    form.addEventListener("submit", function (event) {
+      event.preventDefault();
+      var body = messageInput.value + "\n\n— " + nameInput.value;
+      window.location.href = "mailto:" + contact.email +
+        "?subject=" + encodeURIComponent(contact.subject) +
+        "&body=" + encodeURIComponent(body);
+    });
+
+    var intro = el("div", {}, [
+      el("div", { className: "section-label" }, [contact.label]),
+      el("h2", {}, [contact.heading]),
+      el("p", {}, [contact.text]),
+      el("a", { href: "mailto:" + contact.email, className: "contact-section__email" }, [contact.email])
+    ]);
+    return el("div", { className: "contact-section", id: "contact" }, [intro, form]);
+  }
+
   function renderHome(mount) {
     mount.appendChild(renderHero());
     mount.appendChild(renderSelectedWork());
     mount.appendChild(renderAreas());
+    var customers = renderCustomers();
+    if (customers) mount.appendChild(customers);
     mount.appendChild(renderAbout());
+    var contact = renderContact();
+    if (contact) mount.appendChild(contact);
   }
 
   function renderTopicHeader(topic, index) {

@@ -4,14 +4,15 @@
 // (e.g. "assets/img/my-photo.jpg") and drop the file in assets/img/.
 window.SITE_DATA = {
   meta: {
-    siteTitle: "Avital Kalimi — Data Professional",
-    accent: "#b9f0b0",
-    accentAlternates: ["#b9f0b0", "#ffe66b", "#bfdcff", "#ffd6e7"],
+    siteTitle: "A&K — Data Professional",
+    accent: "#6E8BFF",
+    accentAlternates: ["#6E8BFF", "#3DDBD9", "#4D7CFF", "#A78BFF"],
     fullHero: true
   },
 
   nav: {
-    brand: { label: "Avital Kalimi", href: "index.html" },
+    // To swap the logo, replace assets/img/logo-horizontal-dark.svg (or point `logo` at another file).
+    brand: { label: "A&K", logo: "assets/img/logo-horizontal-dark.svg?v=2", logoCompact: "assets/img/logo-dark.svg", href: "index.html" },
     links: [
       { id: "bi", label: "BI", href: "bi.html" },
       { id: "gis", label: "GIS", href: "gis.html" },
@@ -141,13 +142,40 @@ window.SITE_DATA = {
     heroHighlights: ["raw data", "decisions, maps & models"],
     heroMid: "into",
     heroTail: ".",
+    // Background pictures behind the hero; they rotate every heroIntervalMs milliseconds.
+    heroImages: ["assets/img/hero-1.jpg", "assets/img/hero-2.jpg", "assets/img/hero-3.jpg"],
+    heroIntervalMs: 5000,
     subline: "I work across business intelligence, GIS, computer vision, LLM applications and SQL — from the first query to the final dashboard.",
     featured: [
       { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #1" },
       { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #2" }
     ],
+    // Customer logo wall. To add a customer, drop the logo in assets/img/customers/ and add a line here.
+    customers: {
+      label: "Projects",
+      heading: "Our customers",
+      logos: [
+        { name: "ONE", image: "assets/img/customers/one.png" },
+        { name: "Ben-Gurion University of the Negev", image: "assets/img/customers/ben-gurion-university.png" },
+        { name: "Be'er Sheva Municipality", image: "assets/img/customers/beer-sheva.png" },
+        { name: "Israel Defense Forces", image: "assets/img/customers/idf.svg" },
+        { name: "Rustic Bakery", image: "assets/img/customers/rustic-bakery.png" },
+        { name: "Ortal", image: "assets/img/customers/ortal.png" },
+        { name: "Azrieli Group", image: "assets/img/customers/azrieli-group.png" },
+        { name: "Dod Moshe", image: "assets/img/customers/dod-moshe.png" }
+      ]
+    },
+    // Contact section at the end of the home page. The form opens the visitor's email app, addressed to `email`.
+    contact: {
+      label: "Contact",
+      heading: "Contact me",
+      text: "Have a project or a question? Send me a message and I'll get back to you.",
+      email: "datakalimi@gmail.com",
+      subject: "Message from the A&K website",
+      buttonLabel: "Send email"
+    },
     about: {
-      photo: null, photoAlt: "Your photo",
+      photo: "assets/img/portrait.jpg?v=3", photoAlt: "Portrait photo",
       bioParagraphs: [
         "A few sentences about who you are, your background, and the kind of problems you enjoy solving. Replace this paragraph with your own story.",
         "A second paragraph — what you're currently working on or looking for, and what makes your way of working different."
@@ -163,7 +191,7 @@ window.SITE_DATA = {
   },
 
   footer: {
-    brand: "Avital Kalimi",
+    brand: "A&K",
     linksNote: "LinkedIn · GitHub · Email — links coming soon"
   }
 };
