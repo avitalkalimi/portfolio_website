@@ -82,8 +82,11 @@
         ])
       ]);
     });
-    var heading = el("h2", {}, ["Five areas of work"]);
-    var grid = el("div", { className: "grid-3" }, cards);
+    var countWords = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten"];
+    var count = countWords[data.topics.length] || String(data.topics.length);
+    var heading = el("h2", {}, [count + " areas of work"]);
+    // Four cards sit in one row of four instead of 3 + 1.
+    var grid = el("div", { className: cards.length === 4 ? "grid-3 grid-3--four" : "grid-3" }, cards);
     return el("div", { className: "areas-section" }, [heading, grid]);
   }
 

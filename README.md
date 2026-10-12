@@ -1,6 +1,6 @@
 # A&K — Portfolio
 
-Personal data portfolio site: a homepage plus five topic pages (Business Intelligence, GIS, Computer Vision, LLM, SQL).
+Personal data portfolio site: a homepage plus four topic pages (AI, Business Intelligence, GIS, Computer Vision).
 
 Live: https://avitalkalimi.github.io/portfolio_website/
 

@@ -28,7 +28,7 @@
       // Only very narrow screens drop the "| SYSTEMS" part and show the compact mark.
       brandContent = el("picture", null, [
         data.nav.brand.logoCompact
-          ? el("source", { media: "(max-width: 480px)", srcset: data.nav.brand.logoCompact })
+          ? el("source", { media: "(max-width: 520px)", srcset: data.nav.brand.logoCompact })
           : null,
         el("img", { src: data.nav.brand.logo, alt: data.nav.brand.label, className: "site-nav__logo" })
       ]);

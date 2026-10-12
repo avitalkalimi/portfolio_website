@@ -14,19 +14,39 @@ window.SITE_DATA = {
     // To swap the logo, replace assets/img/logo-horizontal-dark.svg (or point `logo` at another file).
     brand: { label: "A&K", logo: "assets/img/logo-horizontal-dark.svg?v=2", logoCompact: "assets/img/logo-dark.svg", href: "index.html" },
     links: [
+      { id: "ai", label: "AI", href: "ai.html" },
       { id: "bi", label: "BI", href: "bi.html" },
       { id: "gis", label: "GIS", href: "gis.html" },
-      { id: "cv", label: "Computer Vision", shortLabel: "CV", href: "computer-vision.html" },
-      { id: "llm", label: "LLM", href: "llm.html" },
-      { id: "sql", label: "SQL", href: "sql.html" },
+      { id: "cv", label: "Computer Vision", href: "computer-vision.html" },
       { id: "about", label: "About", href: "index.html#about" }
     ]
   },
 
-  // Order here = circular prev/next order = "Five areas of work" order.
+  // Order here = circular prev/next order = "areas of work" order.
   topics: [
     {
-      id: "bi", number: "01", title: "Business Intelligence", page: "bi.html",
+      id: "ai", number: "01", title: "AI", page: "ai.html",
+      shortDesc: "Applied AI that turns data into working products.",
+      intro: "A short intro about your AI work — the problems you solve with it, how you build and ship it, and who uses it. Replace with your own words.",
+      projects: [
+        { label: "Project 1", title: "Project title goes here", image: null, imageAlt: "Project 1 — AI project screenshot",
+          problem: "what question or pain this project answered.",
+          approach: "how you built it, key decisions along the way.",
+          result: "what changed; a number if you have one.",
+          chips: ["Python", "Machine Learning", "APIs"] },
+        { label: "Project 2", title: "Project title goes here", image: null, imageAlt: "Project 2 — AI project screenshot",
+          problem: "what question or pain this project answered.",
+          approach: "how you built it, key decisions along the way.",
+          result: "what changed; a number if you have one.",
+          chips: ["Tool", "Tool"] },
+        { label: "Project 3", title: "Project title goes here", image: null, imageAlt: "Project 3 — AI project screenshot",
+          problem: "what question or pain this project answered.",
+          approach: "how you built it, key decisions along the way.",
+          result: "what changed; a number if you have one.",
+          chips: ["Tool", "Tool"] }
+      ]
+    },    {
+      id: "bi", number: "02", title: "Business Intelligence", page: "bi.html",
       shortDesc: "Dashboards, reporting and metrics that make numbers legible.",
       intro: "A short intro about your BI work — the kinds of dashboards you build, who uses them, and what changes when they do. Replace with your own words.",
       projects: [
@@ -48,7 +68,7 @@ window.SITE_DATA = {
       ]
     },
     {
-      id: "gis", number: "02", title: "GIS", page: "gis.html",
+      id: "gis", number: "03", title: "GIS", page: "gis.html",
       shortDesc: "Spatial analysis and maps that reveal where things happen.",
       intro: "A short intro about your GIS work — the spatial questions you answer, the maps you build, and who uses them. Replace with your own words.",
       projects: [
@@ -70,7 +90,7 @@ window.SITE_DATA = {
       ]
     },
     {
-      id: "cv", number: "03", title: "Computer Vision", page: "computer-vision.html",
+      id: "cv", number: "04", title: "Computer Vision", page: "computer-vision.html",
       shortDesc: "Models that read images — detection, classification, OCR.",
       intro: "A short intro about your computer vision work — detection, classification, OCR, and where these models run in the real world. Replace with your own words.",
       projects: [
@@ -91,50 +111,6 @@ window.SITE_DATA = {
           chips: ["Tool", "Tool"] }
       ]
     },
-    {
-      id: "llm", number: "04", title: "LLM", page: "llm.html",
-      shortDesc: "Language-model applications, from RAG pipelines to agents.",
-      intro: "A short intro about your LLM work — RAG pipelines, agents and applications, and the problems they solve. Replace with your own words.",
-      projects: [
-        { label: "Project 1", title: "Project title goes here", image: null, imageAlt: "Project 1 — app / demo screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["LangChain", "RAG", "Claude API"] },
-        { label: "Project 2", title: "Project title goes here", image: null, imageAlt: "Project 2 — app / demo screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] },
-        { label: "Project 3", title: "Project title goes here", image: null, imageAlt: "Project 3 — app / demo screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] }
-      ]
-    },
-    {
-      id: "sql", number: "05", title: "SQL", page: "sql.html",
-      shortDesc: "The engine room — data modeling, optimization and pipelines.",
-      intro: "A short intro about your SQL work — data modeling, query optimization and the pipelines behind everything else. Replace with your own words.",
-      projects: [
-        { label: "Project 1", title: "Project title goes here", image: null, imageAlt: "Project 1 — schema / query screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["PostgreSQL", "dbt", "Python"] },
-        { label: "Project 2", title: "Project title goes here", image: null, imageAlt: "Project 2 — schema / query screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] },
-        { label: "Project 3", title: "Project title goes here", image: null, imageAlt: "Project 3 — schema / query screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] }
-      ]
-    }
   ],
 
   home: {
@@ -145,7 +121,7 @@ window.SITE_DATA = {
     // Background pictures behind the hero; they rotate every heroIntervalMs milliseconds.
     heroImages: ["assets/img/hero-1.jpg", "assets/img/hero-2.jpg", "assets/img/hero-3.jpg"],
     heroIntervalMs: 5000,
-    subline: "I work across business intelligence, GIS, computer vision, LLM applications and SQL — from the first query to the final dashboard.",
+    subline: "I work across AI, business intelligence, GIS and computer vision — from the first query to the final dashboard.",
     featured: [
       { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #1" },
       { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #2" }
