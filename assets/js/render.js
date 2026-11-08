@@ -57,9 +57,63 @@
     return el("div", { className: "hero-slides", "aria-hidden": "true" }, slides);
   }
 
+  // Featured-card carousel: cross-fades through a report's pages; dots jump to a page.
+  // Cards start offset from each other so they don't change at the same moment.
+  function renderCarousel(images, imageAlt, cardIndex) {
+    var interval = data.home.carouselIntervalMs || 4000;
+    var current = 0;
+    var timer = null;
+    var slides = images.map(function (src, i) {
+      return el("img", {
+        src: src,
+        alt: i === 0 ? (imageAlt || "") : "",
+        loading: i === 0 ? "eager" : "lazy",
+        className: "img-fill carousel__slide" + (i === 0 ? " carousel__slide--active" : "")
+      }, []);
+    });
+    var dots = images.map(function (_, i) {
+      var dot = el("button", {
+        type: "button",
+        className: "carousel__dot" + (i === 0 ? " carousel__dot--active" : ""),
+        "aria-label": "Show page " + (i + 1)
+      }, []);
+      dot.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        show(i);
+        restart();
+      });
+      return dot;
+    });
+    function show(i) {
+      slides[current].classList.remove("carousel__slide--active");
+      dots[current].classList.remove("carousel__dot--active");
+      current = i;
+      slides[current].classList.add("carousel__slide--active");
+      dots[current].classList.add("carousel__dot--active");
+    }
+    function restart() {
+      clearInterval(timer);
+      timer = setInterval(function () { show((current + 1) % slides.length); }, interval);
+    }
+    var wrap = el("div", { className: "img-slot img-slot--featured carousel" }, [
+      el("div", { className: "carousel__track" }, slides),
+      el("div", { className: "carousel__dots" }, dots)
+    ]);
+    var reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduceMotion) {
+      setTimeout(restart, cardIndex * (interval / 2));
+      wrap.addEventListener("mouseenter", function () { clearInterval(timer); });
+      wrap.addEventListener("mouseleave", restart);
+    }
+    return wrap;
+  }
+
   function renderSelectedWork() {
-    var cards = data.home.featured.map(function (item) {
-      var image = renderImageSlot("featured", item.image, item.imageAlt, false);
+    var cards = data.home.featured.map(function (item, cardIndex) {
+      var image = item.images && item.images.length > 1
+        ? renderCarousel(item.images, item.imageAlt, cardIndex)
+        : renderImageSlot("featured", item.image, item.imageAlt, false);
       var meta = el("div", {}, [
         el("div", { className: "featured-card__title" }, [item.title]),
         el("div", { className: "featured-card__meta" }, [item.meta])

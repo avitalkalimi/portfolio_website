@@ -611,6 +611,38 @@ img { display: block; max-width: 100%; }
 .img-slot--project { height: 290px; }
 .img-slot .img-fill[src*="img/projects/"] { object-position: top left; }
 .img-slot .img-fill[src*="sal-yarok"] { object-position: top right; }
+
+/* ---- Featured-card carousel ---- */
+.carousel { position: relative; }
+.carousel__track { position: absolute; inset: 0; }
+.carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .8s ease, transform .3s ease;
+}
+.carousel__slide--active { opacity: 1; }
+.carousel__dots {
+  position: absolute;
+  left: 50%;
+  bottom: 12px;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 6px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(15, 27, 51, .55);
+}
+.carousel__dot {
+  width: 8px;
+  height: 8px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .5);
+  cursor: pointer;
+}
+.carousel__dot--active { background: #fff; }
 .img-slot--portrait { width: 200px; height: 200px; flex: none; }
 
 /* ---- Responsive ---- */

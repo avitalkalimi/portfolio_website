@@ -126,8 +126,8 @@ window.SITE_DATA = {
     heroIntervalMs: 5000,
     subline: "I work across AI, business intelligence, GIS and computer vision — from the first query to the final dashboard.",
     featured: [
-      { title: "Supermarket Retail Intelligence", meta: "Business Intelligence · Power BI, DAX", image: "assets/img/projects/retail-pulse.jpg", imageAlt: "Supermarket sales dashboard — KPIs, daily sales and branch ranking", href: "bi.html" },
-      { title: "Retail Inventory Operations Center", meta: "Business Intelligence · Power BI, Hebrew RTL", image: "assets/img/projects/sal-yarok-inventory.jpg", imageAlt: "Inventory operations dashboard in Hebrew — stock health by category", href: "bi.html" }
+      { title: "Supermarket Retail Intelligence", meta: "Business Intelligence · Power BI, DAX", image: "assets/img/projects/retail-pulse.jpg", images: ["assets/img/projects/retail-pulse.jpg", "assets/img/projects/retail-pulse-products.jpg", "assets/img/projects/retail-pulse-customers.jpg"], imageAlt: "Supermarket sales dashboard — KPIs, daily sales and branch ranking", href: "bi.html" },
+      { title: "Retail Inventory Operations Center", meta: "Business Intelligence · Power BI, Hebrew RTL", image: "assets/img/projects/sal-yarok-inventory.jpg", images: ["assets/img/projects/sal-yarok-inventory.jpg", "assets/img/projects/sal-yarok-orders.jpg", "assets/img/projects/sal-yarok-branches.jpg"], imageAlt: "Inventory operations dashboard in Hebrew — stock health by category", href: "bi.html" }
     ],
     // Customer logo wall. To add a customer, drop the logo in assets/img/customers/ and add a line here.
     customers: {
@@ -156,8 +156,8 @@ window.SITE_DATA = {
     about: {
       photo: "assets/img/portrait.jpg?v=3", photoAlt: "Portrait photo",
       bioParagraphs: [
-        "A few sentences about who you are, your background, and the kind of problems you enjoy solving. Replace this paragraph with your own story.",
-        "A second paragraph — what you're currently working on or looking for, and what makes your way of working different."
+        "I'm Avital Kalimi, a data and BI analyst with an M.Sc. in Data Science and a B.Sc. in Industrial Engineering and Management from Ben-Gurion University. I've built Power BI dashboards, data models and data warehouses for clients, business units and a public organization, and I started out as a geo analyst in the IDF working with GIS, drone and satellite imagery.",
+        "I like owning a project end to end: sitting with managers to understand what they need, turning it into clear KPIs, building the model and the report, and training the people who use it. Today I combine BI with AI, from SQL and DAX to agents that answer business questions in plain language."
       ],
       toolRows: [
         { label: "BI", chips: ["Power BI", "Tableau", "DAX"] },
