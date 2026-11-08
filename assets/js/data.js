@@ -63,11 +63,11 @@ window.SITE_DATA = {
           result: "48 products tracked; 14 shelf gaps and 19 items below reorder point flagged automatically, with 16.5 days of average stock cover.",
           chips: ["Power BI", "DAX", "RTL / Hebrew"],
           embedUrl: "dashboards/inventory-he.html" },
-        { label: "Project 3", title: "Project title goes here", image: null, imageAlt: "Project 3 — dashboard screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] }
+        { label: "Project 3", title: "Nadlan — TxDOT Construction Contracts (EN / HE)", image: "assets/img/projects/nadlan-txdot-en.jpg", images: ["assets/img/projects/nadlan-txdot-en.jpg", "assets/img/projects/nadlan-txdot-he.jpg"], imageAlt: "Texas DOT construction contracts dashboard — portfolio KPIs, bids by year and risk signals",
+          problem: "follow a $47.7bn portfolio of 3,151 Texas DOT road-construction contracts — progress, payments and delays.",
+          approach: "bilingual report (English + Hebrew RTL, one-click language switch) with 4 pages: overview, districts, contractors and schedule; risk signals for contracts behind schedule, change orders and damages.",
+          result: "64.2% of the revised bid completed ($30.6bn paid); 664 contracts behind schedule surfaced, with drill-down by district and prime contractor.",
+          chips: ["Power BI", "DAX", "Bilingual EN/HE"] }
       ]
     },
     {

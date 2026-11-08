@@ -59,7 +59,7 @@
 
   // Featured-card carousel: cross-fades through a report's pages; dots jump to a page.
   // Cards start offset from each other so they don't change at the same moment.
-  function renderCarousel(images, imageAlt, cardIndex) {
+  function renderCarousel(images, imageAlt, cardIndex, sizeModifier) {
     var interval = data.home.carouselIntervalMs || 4000;
     var current = 0;
     var timer = null;
@@ -96,7 +96,7 @@
       clearInterval(timer);
       timer = setInterval(function () { show((current + 1) % slides.length); }, interval);
     }
-    var wrap = el("div", { className: "img-slot img-slot--featured carousel" }, [
+    var wrap = el("div", { className: "img-slot img-slot--" + (sizeModifier || "featured") + " carousel" }, [
       el("div", { className: "carousel__track" }, slides),
       el("div", { className: "carousel__dots" }, dots)
     ]);
@@ -244,8 +244,10 @@
   }
 
   function renderTopicProjects(topic) {
-    var rows = topic.projects.map(function (project) {
-      var image = renderImageSlot("project", project.image, project.imageAlt, false);
+    var rows = topic.projects.map(function (project, rowIndex) {
+      var image = project.images && project.images.length > 1
+        ? renderCarousel(project.images, project.imageAlt, rowIndex, "project")
+        : renderImageSlot("project", project.image, project.imageAlt, false);
       var chips = project.chips.map(function (chip) {
         return el("span", { className: "chip" }, [chip]);
       });

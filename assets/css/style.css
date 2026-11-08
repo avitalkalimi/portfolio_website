@@ -610,7 +610,8 @@ img { display: block; max-width: 100%; }
 .img-slot--featured { height: 340px; }
 .img-slot--project { height: 290px; }
 .img-slot .img-fill[src*="img/projects/"] { object-position: top left; }
-.img-slot .img-fill[src*="sal-yarok"] { object-position: top right; }
+.img-slot .img-fill[src*="sal-yarok"],
+.img-slot .img-fill[src*="nadlan-txdot-he"] { object-position: top right; }
 
 /* ---- Featured-card carousel ---- */
 .carousel { position: relative; }
