@@ -50,16 +50,19 @@ window.SITE_DATA = {
       shortDesc: "Dashboards, reporting and metrics that make numbers legible.",
       intro: "A short intro about your BI work — the kinds of dashboards you build, who uses them, and what changes when they do. Replace with your own words.",
       projects: [
-        { label: "Project 1", title: "Project title goes here", image: null, imageAlt: "Project 1 — dashboard screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Power BI", "SQL", "DAX"] },
-        { label: "Project 2", title: "Project title goes here", image: null, imageAlt: "Project 2 — dashboard screenshot",
-          problem: "what question or pain this project answered.",
-          approach: "how you built it, key decisions along the way.",
-          result: "what changed; a number if you have one.",
-          chips: ["Tool", "Tool"] },
+        { label: "Project 1", title: "Supermarket Retail Intelligence", image: "assets/img/projects/retail-pulse.jpg", imageAlt: "Supermarket Retail Intelligence — dashboard screenshot",
+          problem: "track sales, gross income and customer satisfaction across 3 supermarket branches.",
+          approach: "star-schema model with DAX measures for sales, margin and ratings; overview, products and customers pages with branch and month slicers.",
+          result: "1,000 transactions turned into a branch performance ranking, daily sales trend vs. average, and product-line comparison.",
+          chips: ["Power BI", "DAX", "Data Modeling"],
+          // Paste the URL from Power BI > File > Embed report > Publish to web (the https://app.powerbi.com/view?r=... part)
+          embedUrl: null },
+        { label: "Project 2", title: "Retail Inventory Operations Center (Hebrew)", image: "assets/img/projects/sal-yarok-inventory.jpg", imageAlt: "Inventory operations dashboard in Hebrew — stock health by category and reorder list",
+          problem: "store managers couldn't see which products were out of stock or about to run out across 3 branches.",
+          approach: "Hebrew right-to-left report with 3 pages (inventory, purchase orders, branch performance), stock-health status per product and category filters.",
+          result: "48 products tracked; 14 shelf gaps and 19 items below reorder point flagged automatically, with 16.5 days of average stock cover.",
+          chips: ["Power BI", "DAX", "RTL / Hebrew"],
+          embedUrl: null },
         { label: "Project 3", title: "Project title goes here", image: null, imageAlt: "Project 3 — dashboard screenshot",
           problem: "what question or pain this project answered.",
           approach: "how you built it, key decisions along the way.",
@@ -123,8 +126,8 @@ window.SITE_DATA = {
     heroIntervalMs: 5000,
     subline: "I work across AI, business intelligence, GIS and computer vision — from the first query to the final dashboard.",
     featured: [
-      { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #1" },
-      { title: "Featured project title", meta: "Topic · Tools used", image: null, imageAlt: "Featured project screenshot #2" }
+      { title: "Supermarket Retail Intelligence", meta: "Business Intelligence · Power BI, DAX", image: "assets/img/projects/retail-pulse.jpg", imageAlt: "Supermarket sales dashboard — KPIs, daily sales and branch ranking", href: "bi.html" },
+      { title: "Retail Inventory Operations Center", meta: "Business Intelligence · Power BI, Hebrew RTL", image: "assets/img/projects/sal-yarok-inventory.jpg", imageAlt: "Inventory operations dashboard in Hebrew — stock health by category", href: "bi.html" }
     ],
     // Customer logo wall. To add a customer, drop the logo in assets/img/customers/ and add a line here.
     customers: {

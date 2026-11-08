@@ -501,6 +501,41 @@ img { display: block; max-width: 100%; }
 .project-row__facts b { font-weight: 700; color: var(--text); }
 .project-row .chip-row { margin-top: 16px; }
 
+/* ---- Clickable featured card ---- */
+.featured-card--link { display: block; color: inherit; text-decoration: none; }
+.featured-card--link .img-fill { transition: transform .3s ease; }
+.featured-card--link:hover .img-fill { transform: scale(1.02); }
+.featured-card--link:hover .featured-card__title { color: var(--accent-print); }
+
+/* ---- Live Power BI embed (set embedUrl in data.js) ---- */
+.project-embed { grid-column: 1 / -1; }
+.project-embed__frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  min-height: 360px;
+  background: var(--surface);
+  border: 1px solid var(--border-card);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+.project-embed__frame iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+.project-embed__link {
+  display: inline-block;
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: .05em;
+  color: var(--accent-print);
+}
+.project-embed__link:hover { text-decoration: underline; }
+
 /* ---- Topic footer nav ---- */
 .topic-footer-nav {
   border-top: 1px solid var(--border-rule);
@@ -574,6 +609,8 @@ img { display: block; max-width: 100%; }
 .img-slot { min-width: 0; overflow: hidden; }
 .img-slot--featured { height: 340px; }
 .img-slot--project { height: 290px; }
+.img-slot .img-fill[src*="img/projects/"] { object-position: top left; }
+.img-slot .img-fill[src*="sal-yarok"] { object-position: top right; }
 .img-slot--portrait { width: 200px; height: 200px; flex: none; }
 
 /* ---- Responsive ---- */

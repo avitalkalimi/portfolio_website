@@ -64,6 +64,7 @@
         el("div", { className: "featured-card__title" }, [item.title]),
         el("div", { className: "featured-card__meta" }, [item.meta])
       ]);
+      if (item.href) return el("a", { className: "featured-card featured-card--link", href: item.href }, [image, meta]);
       return el("div", { className: "featured-card" }, [image, meta]);
     });
     var label = el("div", { className: "section-label" }, ["Selected work"]);
@@ -205,7 +206,26 @@
         facts,
         el("div", { className: "chip-row" }, chips)
       ]);
-      return el("div", { className: "project-row" }, [image, text]);
+      var children = [image, text];
+      if (project.embedUrl) {
+        children.push(el("div", { className: "project-embed" }, [
+          el("div", { className: "project-embed__frame" }, [
+            el("iframe", {
+              src: project.embedUrl,
+              title: project.title + " — interactive Power BI report",
+              loading: "lazy",
+              allowFullscreen: true
+            }, [])
+          ]),
+          el("a", {
+            className: "project-embed__link",
+            href: project.embedUrl,
+            target: "_blank",
+            rel: "noopener"
+          }, ["Open full screen →"])
+        ]));
+      }
+      return el("div", { className: "project-row" }, children);
     });
     return el("div", { className: "topic-projects" }, rows);
   }
