@@ -266,7 +266,7 @@
           el("div", { className: "project-embed__frame" }, [
             el("iframe", {
               src: project.embedUrl,
-              title: project.title + " — interactive Power BI report",
+              title: project.title + " — interactive dashboard",
               loading: "lazy",
               allowFullscreen: true
             }, [])
