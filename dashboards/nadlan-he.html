@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>נדל"ן · חוזי TxDOT</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#ECE9E3; --card:#FAF8F3; --ink:#1E1E1E; --muted:#6E6A62; --line:#E3DED4;
+    --y:#F5C842; --y2:#E2A80A; --y3:#FBE6A3; --y4:#FDF3D2; --k:#1F1F1F; --k2:#2C2C2C; --g:#C9C5BC; --g2:#77736B;
+    --red:#C8372D;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);font-family:Heebo,"Segoe UI",Arial,sans-serif;color:var(--ink)}
+  .stage{width:1600px;height:900px;position:absolute;left:0;top:0;transform-origin:top left;background:var(--bg);padding:22px 26px;display:flex;flex-direction:column}
+  [dir=rtl] .stage{left:auto;right:0;transform-origin:top right}
+  /* top bar */
+  .top{display:flex;align-items:center;gap:22px;height:46px}
+  .brand{font-size:19px;font-weight:500;white-space:nowrap}
+  .lang{background:var(--y);color:var(--ink);text-decoration:none;font-size:14px;font-weight:500;padding:8px 26px;border-radius:4px}
+  .lang:hover{background:var(--y2)}
+  .tabs{display:flex;gap:4px;margin-inline-start:auto}
+  .tab{border:0;background:#F6F4EF;font:inherit;font-size:14px;padding:10px 34px;cursor:pointer;color:var(--ink);border-radius:3px}
+  .tab.on{background:var(--k);color:#fff}
+  .tab:not(.on):hover{background:#fff}
+  .filters{display:flex;gap:10px;margin-inline-start:30px}
+  .flt{background:#F6F4EF;border-radius:18px;padding:5px 16px 4px;width:160px;display:flex;flex-direction:column}
+  .flt label{font-size:11px;color:var(--muted)}
+  .flt select{border:0;background:transparent;font:inherit;font-size:13px;color:var(--ink);padding:0;outline:none;cursor:pointer;width:100%}
+  /* header */
+  .head{display:flex;align-items:flex-end;margin-top:14px;min-height:110px}
+  .head .tt{flex:1}
+  .crumb{font-size:12px;color:var(--muted)}
+  h1{font-size:42px;font-weight:300;margin:2px 0 10px;letter-spacing:-.5px}
+  .subk{display:flex;gap:0}
+  .subk div{min-width:200px;padding-inline-start:8px;border-inline-start:1px solid #B9B4AA;margin-inline-end:20px;font-size:15px;line-height:1.15}
+  .subk div:not(:first-child){border-inline-start-color:transparent}
+  .subk small{display:block;font-size:11px;color:var(--muted)}
+  .kpis{display:flex;gap:0;margin-bottom:10px}
+  .kpi{width:150px;text-align:center}
+  .kpi b{display:block;font-size:36px;font-weight:300;line-height:1.05}
+  .kpi small{font-size:12px;color:var(--muted)}
+  /* grid */
+  .page{flex:1;display:none;min-height:0}
+  .page.on{display:grid}
+  .card{background:var(--card);border-radius:16px;padding:14px 16px;min-height:0;overflow:hidden;display:flex;flex-direction:column}
+  .card.y{background:var(--y)}
+  .card.k{background:var(--k);color:#fff}
+  .card h3{margin:0 0 2px;font-size:15px;font-weight:500}
+  .card .note{font-size:11px;color:var(--muted);margin-bottom:6px}
+  .card.k .note{color:#bbb}
+  .body{flex:1;min-height:0;position:relative}
+  .scroll{overflow:auto;height:100%}
+  .scroll::-webkit-scrollbar{width:6px;height:6px}.scroll::-webkit-scrollbar-thumb{background:#ccc;border-radius:3px}
+  /* tables */
+  table{border-collapse:collapse;width:100%;font-size:12.5px}
+  th{font-weight:400;color:var(--muted);text-align:start;padding:6px 6px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--card);cursor:pointer;white-space:nowrap}
+  .k th{background:var(--k);color:#ddd;border-bottom-color:#444}
+  th.num,td.num{text-align:end}
+  td{padding:5px 6px;border-bottom:1px solid #EFEBE3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:330px}
+  .k td{border-bottom-color:#333}
+  tr:hover td{background:rgba(245,200,66,.18)}
+  .k .hw{color:var(--y)}
+  /* bars */
+  .hbars{direction:ltr;display:flex;flex-direction:column;gap:3px;height:100%;overflow:auto}
+  .hb{display:grid;grid-template-columns:150px 1fr;align-items:center;gap:8px;font-size:11.5px;cursor:pointer}
+  .hb .lb{text-align:end;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-transform:uppercase}
+  .hb .tr{display:flex;align-items:center;gap:6px}
+  .hb .br{height:12px;background:var(--k);min-width:2px}
+  .k .hb .br,.y .hb .br.alt{background:var(--y)}
+  .y .hb .br{background:var(--k)}
+  .hb .v{font-size:11px;white-space:nowrap}
+  .hb:hover .lb{color:var(--y2)}
+  .vbars{direction:ltr;display:flex;align-items:flex-end;gap:6px;height:100%;padding-top:18px}
+  .vb{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+  .vb .br{width:100%;background:var(--k);position:relative;min-height:1px}
+  .vb .br span{position:absolute;bottom:100%;left:50%;transform:translateX(-50%);font-size:10px;white-space:nowrap;margin-bottom:2px}
+  .vb .x{font-size:9.5px;color:var(--muted);margin-top:4px;white-space:nowrap}
+  .vb .x.rot{writing-mode:vertical-rl;transform:rotate(180deg);height:44px}
+  .k .vb .br{background:var(--y)} .k .vb .x{color:#bbb}
+  .ybars .vb .br{background:var(--y)}
+  /* misc */
+  .big{font-size:58px;font-weight:300;color:var(--y);text-align:center;line-height:1.1;margin-top:8px}
+  .cap{text-align:center;font-size:13px;color:#ccc}
+  .risk{display:grid;grid-template-columns:repeat(3,1fr);gap:10px 14px;margin-top:10px}
+  .risk div{border-inline-start:2px solid var(--y);padding-inline-start:8px;font-size:22px;line-height:1.1}
+  .risk small{display:block;font-size:11px;color:#bbb}
+  .lc-top{background:var(--y);text-align:center;font-weight:300;line-height:1.1}
+  .lc-mid{text-align:center;font-size:11.5px;padding:7px 8px;border-top:6px solid var(--bg);border-bottom:6px solid var(--bg)}
+  .lc-bot{padding:6px 14px 8px;display:grid;grid-template-columns:1fr 1fr;gap:2px 10px;font-size:12px}
+  .lc-bot .amt{grid-column:1/-1;border-inline-start:1px solid var(--ink);padding-inline-start:6px}
+  .lc-bot b{display:block;font-size:24px;font-weight:300;line-height:1.1}
+  .donut{display:flex;align-items:center;justify-content:center;height:100%}
+  .tm{display:flex;flex-wrap:wrap;width:100%;height:46px;gap:2px;margin-bottom:6px}
+  .tm div{font-size:10px;padding:2px 4px;color:#fff;overflow:hidden;white-space:nowrap;cursor:pointer;line-height:1.2}
+  .heat{direction:ltr;display:grid;grid-template-columns:76px repeat(5,minmax(0,1fr));grid-template-rows:28px repeat(5,minmax(0,1fr));gap:5px;font-size:12px;margin-top:6px;height:calc(100% - 10px);max-width:660px}
+  .heat .h{color:var(--muted);display:flex;align-items:center;font-size:11.5px}
+  .heat .hc{display:flex;align-items:center;justify-content:center;font-size:11.5px;color:var(--muted)}
+  .heat .c{display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:300;border-radius:3px}
+  .ext{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:10px;border-inline-start:1px solid var(--ink);padding-inline-start:8px}
+  .ext b{display:block;font-size:20px;font-weight:300}
+  .ext .amt{grid-column:1/-1}
+  .ext small{font-size:11px;color:var(--muted)}
+  .empty{color:var(--muted);font-size:13px;padding:20px;text-align:center}
+  .foot{position:absolute;bottom:6px;inset-inline-end:28px;font-size:10px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="top">
+    <div class="brand" id="brand"></div>
+    <a class="lang" id="lang" href="#"></a>
+    <div class="tabs" id="tabs"></div>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="head">
+    <div class="tt">
+      <div class="crumb" id="crumb"></div>
+      <h1 id="title"></h1>
+      <div class="subk" id="subk"></div>
+    </div>
+    <div class="kpis" id="kpis"></div>
+  </div>
+
+  <!-- OVERVIEW -->
+  <div class="page" id="p-overview" style="grid-template-columns:250px 1fr 1fr 1fr 1fr 226px;grid-template-rows:212px minmax(0,1fr);gap:12px">
+    <div class="card" style="padding:0;background:transparent;grid-row:1" id="o-largest"></div>
+    <div class="card" style="grid-column:2/4"><h3 data-t="bidByYear"></h3><div class="body" id="o-years"></div></div>
+    <div class="card" style="grid-column:4/6"><h3 data-t="workCompleted"></h3><div class="note" data-t="ofRevised"></div><div class="body" id="o-donut"></div></div>
+    <div style="grid-column:6;grid-row:1/3;display:grid;grid-template-rows:96px 150px minmax(0,1fr);gap:10px;min-height:0">
+      <div class="card k"><div class="big" id="o-active" style="font-size:40px;margin-top:2px"></div><div class="cap" data-t="activeContracts"></div></div>
+      <div class="card k"><h3 data-t="riskSignals"></h3><div class="risk" id="o-risk" style="grid-template-columns:1fr 1fr"></div></div>
+      <div class="card k"><h3 data-t="activeByComplete"></h3><div class="body" id="o-buckets"></div></div>
+    </div>
+    <div class="card" style="grid-row:2"><h3 data-t="topDistricts"></h3><div class="body" id="o-districts"></div></div>
+    <div class="card" style="grid-row:2;grid-column:2/6"><h3 data-t="largestContracts"></h3><div class="body scroll" id="o-table"></div></div>
+  </div>
+
+  <!-- DISTRICTS -->
+  <div class="page" id="p-districts" style="grid-template-columns:1fr 330px;grid-template-rows:minmax(0,1fr) minmax(0,1fr);gap:12px">
+    <div class="card" style="grid-row:1/3"><div id="d-tree"></div><h3 data-t="districtsRanked"></h3><div class="note" data-t="behindNote"></div><div class="body scroll" id="d-table"></div></div>
+    <div class="card k"><h3 data-t="byWorkType"></h3><div class="body" id="d-types"></div></div>
+    <div class="card y"><h3 data-t="topCounties"></h3><div class="body" id="d-counties"></div></div>
+  </div>
+
+  <!-- CONTRACTORS -->
+  <div class="page" id="p-contractors" style="grid-template-columns:262px 1fr 262px;grid-template-rows:212px minmax(0,1fr);gap:12px">
+    <div class="card" style="padding:0;background:transparent" id="c-largest"></div>
+    <div class="card"><h3 data-t="topPrimes"></h3><div class="body scroll" id="c-table"></div></div>
+    <div class="card k"><div class="big" id="c-withsubs" style="margin-top:22px"></div><div class="cap" data-t="withSubs"></div></div>
+    <div class="card"><h3 data-t="subsPerContract"></h3><div class="body ybars" id="c-dist"></div></div>
+    <div class="card"><h3 data-t="subsByValue"></h3><div class="note" data-t="subsEstimate"></div><div class="body" id="c-subval"></div></div>
+    <div class="card k"><h3 data-t="topSubs"></h3><div class="note" data-t="byContractCount"></div><div class="body" id="c-subcount"></div></div>
+  </div>
+
+  <!-- SCHEDULE -->
+  <div class="page" id="p-schedule" style="grid-template-columns:.76fr .74fr .5fr;grid-template-rows:212px minmax(0,1fr);gap:12px">
+    <div class="card" style="grid-row:1/3"><h3 data-t="timeVsWork"></h3><div class="note" data-t="heatNote"></div><div class="body" id="s-heat"></div></div>
+    <div class="card" style="grid-column:3;grid-row:1"><h3 data-t="contractsLet"></h3><div class="note" data-t="byMonth"></div><div class="body" id="s-months"></div></div>
+    <div class="card k" style="grid-column:2;grid-row:1/3"><h3 data-t="largeBehind"></h3><div class="body scroll" id="s-table"></div></div>
+    <div class="card" style="grid-column:3;grid-row:2"><h3 data-t="extDamages"></h3><div class="body" id="s-ext"></div></div>
+  </div>
+  <div class="foot" id="foot"></div>
+</div>
+
+<script src="nadlan-data.js"></script>
+<script>
+const LANG = "he";
+const OTHER = "nadlan-en.html";
+const T = {
+  en:{brand:"nadlan · TxDOT contracts", langBtn:"עברית", all:"All",
+    pages:{overview:"Overview",districts:"Districts",contractors:"Contractors",schedule:"Schedule"},
+    titles:{overview:"Contract portfolio",districts:"Districts",contractors:"Contractors & subcontractors",schedule:"Schedule"},
+    crumbs:{overview:"Texas DOT construction contracts",districts:"Hierarchy: District → Area office → Contract",contractors:"Prime contractor → Contract → Subcontractors",schedule:"Active contracts · working days allowed, used and granted"},
+    f:{district:"District",year:"Let year",status:"Status",type:"Work type",contractor:"Contractor"},
+    status:{1:"Active",0:"Pending"},
+    revisedBid:"Revised bid",subcontractors:"Subcontractors",primes:"Prime contractors",contracts:"Contracts",paid:"Paid to contractors",remaining:"Remaining",paidPct:"Paid %",
+    largest:"Largest contract",workDone:"Work done",timeUsed:"Time used",bidByYear:"Revised bid by let year",workCompleted:"Work completed",ofRevised:"Of revised bid",
+    activeContracts:"Active contracts",riskSignals:"Risk signals",behind:"Behind",pastDays:"Past days",changeOrders:"Change orders",damages:"Damages",
+    topDistricts:"Top districts",largestContracts:"Largest contracts",activeByComplete:"Active by % complete",
+    contract:"Contract",highway:"Highway",county:"County",prime:"Prime contractor",complete:"Complete",
+    avgPer:"Avg per contract",counties:"Counties",areaOffices:"Area offices",districtsN:"Districts & divisions",
+    districtsRanked:"Districts ranked by revised bid",behindNote:"Behind = active contracts where time used exceeds work done by 20+ pts",
+    district:"District",engineer:"District engineer",pctComplete:"% Complete",byWorkType:"By work type",topCounties:"Top counties",
+    top10:"Top 10 share",subsPer:"Subs per contract",subcontracted:"Subcontracted",subShare:"Subcontract share",largestContractor:"Largest contractor",
+    topPrimes:"Top prime contractors",contractor:"Contractor",withSubs:"Contracts with subcontractors",subsPerContract:"Subs per contract",
+    subsByValue:"Subcontractors by estimated value",subsEstimate:"Estimate: subcontractor % × revised bid",topSubs:"Top subcontractors",byContractCount:"By contract count",
+    daysUsed:"Days used",daysRemaining:"Days remaining",avgExt:"Avg extension days",avgAllowed:"Avg days allowed",pastAllowed:"Past allowed days",
+    timeVsWork:"Time used vs. work done",heatNote:"Yellow = time ahead of work · rows: time used · columns: work done",
+    contractsLet:"Contracts let",byMonth:"By month, since 2025",extDamages:"Extensions & damages",extDays:"Extension days",extended:"Extended",withDamages:"With damages",
+    largeBehind:"Large contracts behind schedule",bid:"Bid",noData:"No contracts match these filters",
+    foot:"Source: TxDOT contract progress · data as of "},
+  he:{brand:"נדל\"ן · חוזי TxDOT", langBtn:"English", all:"הכל",
+    pages:{overview:"סקירה כללית",districts:"מחוזות",contractors:"קבלנים",schedule:"לוחות זמנים"},
+    titles:{overview:"תיק החוזים",districts:"מחוזות",contractors:"קבלנים וקבלני משנה",schedule:"לוחות זמנים"},
+    crumbs:{overview:"חוזי בנייה של משרד התחבורה של טקסס",districts:"היררכיה: מחוז ← משרד אזורי ← חוזה",contractors:"קבלן ראשי ← חוזה ← קבלני משנה",schedule:"חוזים פעילים · ימי עבודה שהוקצו, נוצלו והוארכו"},
+    f:{district:"מחוז",year:"שנת מכרז",status:"סטטוס",type:"סוג עבודה",contractor:"קבלן"},
+    status:{1:"פעיל",0:"ממתין"},
+    revisedBid:"הצעה מעודכנת",subcontractors:"קבלני משנה",primes:"קבלנים ראשיים",contracts:"חוזים",paid:"שולם לקבלנים",remaining:"יתרה",paidPct:"% שולם",
+    largest:"החוזה הגדול ביותר",workDone:"עבודה שבוצעה",timeUsed:"זמן שנוצל",bidByYear:"הצעה מעודכנת לפי שנת מכרז",workCompleted:"היקף ביצוע",ofRevised:"מתוך ההצעה המעודכנת",
+    activeContracts:"חוזים פעילים",riskSignals:"סימני סיכון",behind:"בפיגור",pastDays:"חריגה בימים",changeOrders:"שינויי חוזה",damages:"פיצויים",
+    topDistricts:"מחוזות מובילים",largestContracts:"החוזים הגדולים",activeByComplete:"פעילים לפי אחוז ביצוע",
+    contract:"חוזה",highway:"כביש",county:"קאונטי",prime:"קבלן ראשי",complete:"ביצוע",
+    avgPer:"ממוצע לחוזה",counties:"קאונטיז",areaOffices:"משרדים אזוריים",districtsN:"מחוזות ואגפים",
+    districtsRanked:"מחוזות לפי הצעה מעודכנת",behindNote:"בפיגור = חוזה פעיל שבו הזמן שנוצל עולה על הביצוע ב-20 נק' ומעלה",
+    district:"מחוז",engineer:"מהנדס מחוז",pctComplete:"% ביצוע",byWorkType:"לפי סוג עבודה",topCounties:"קאונטיז מובילים",
+    top10:"נתח 10 המובילים",subsPer:"קבלני משנה לחוזה",subcontracted:"הועבר לקבלני משנה",subShare:"נתח קבלני משנה",largestContractor:"הקבלן הגדול ביותר",
+    topPrimes:"קבלנים ראשיים מובילים",contractor:"קבלן",withSubs:"חוזים עם קבלני משנה",subsPerContract:"קבלני משנה לחוזה",
+    subsByValue:"קבלני משנה לפי שווי משוער",subsEstimate:"הערכה: % קבלן משנה × הצעה מעודכנת",topSubs:"קבלני משנה מובילים",byContractCount:"לפי מספר חוזים",
+    daysUsed:"ימים שנוצלו",daysRemaining:"ימים שנותרו",avgExt:"ממוצע ימי הארכה",avgAllowed:"ממוצע ימים שהוקצו",pastAllowed:"חריגה מהימים",
+    timeVsWork:"זמן שנוצל מול עבודה שבוצעה",heatNote:"צהוב = הזמן מקדים את העבודה · שורות: זמן שנוצל · עמודות: עבודה שבוצעה",
+    contractsLet:"חוזים שנחתמו",byMonth:"לפי חודש, מאז 2025",extDamages:"הארכות ופיצויים",extDays:"ימי הארכה",extended:"הוארכו",withDamages:"עם פיצויים",
+    largeBehind:"חוזים גדולים בפיגור",bid:"הצעה",noData:"אין חוזים שתואמים לסינון",
+    foot:"מקור: TxDOT · נתונים נכונים ל-"}
+}[LANG];
+
+/* ---------- data ---------- */
+const N = window.NADLAN;
+const C = N.c.map((r,i)=>({i,num:r[0],d:r[1],co:r[2],hw:r[3],k:r[4],t:r[5],act:r[6],let:r[7],yr:r[7]?+r[7].slice(0,4):0,
+  rb:r[8],ob:r[9],cho:r[10],wtd:r[11],paid:r[12],ld:r[13],da:r[14],dc:r[15],dg:r[16],pcd:r[17],pct:r[18],ptu:r[19],wb:r[20],tb:r[21],ao:r[22]}));
+const SUBS_BY = {}; N.sub.forEach(s=>{(SUBS_BY[s[0]]=SUBS_BY[s[0]]||[]).push(s)});
+const isBehind = c => c.act && (c.pct - c.pcd) > 20;
+const BUCKETS = ["0–25%","25–50%","50–75%","75–100%","100%+"];
+
+/* ---------- format ---------- */
+const nf = new Intl.NumberFormat("en-US");
+const money = v => { const a=Math.abs(v); return a>=1e9 ? "$"+(v/1e9).toFixed(1)+"bn" : a>=1e6 ? "$"+(v/1e6).toFixed(1)+"M" : a>=1e3 ? "$"+(v/1e3).toFixed(0)+"K" : "$"+nf.format(Math.round(v)); };
+const moneyB = v => "$"+(v/1e9).toFixed(2)+"B";
+const moneyM = v => "$"+nf.format(Math.round(v/1e6))+"M";
+const pct = (v,d=1) => isFinite(v) ? (v*100).toFixed(d)+"%" : "–";
+const sum = (a,f) => a.reduce((s,x)=>s+f(x),0);
+const esc = s => String(s==null?"":s).replace(/[&<>"]/g,ch=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[ch]));
+const $ = id => document.getElementById(id);
+const titleCase = s => s;
+
+/* ---------- state ---------- */
+const PAGES = {
+  overview:{filters:["district","year","status"]},
+  districts:{filters:["year","type","status"]},
+  contractors:{filters:["type","district","contractor"]},
+  schedule:{filters:["year","type","district"]}
+};
+let page = (location.hash||"").replace("#","");
+if(!PAGES[page]) page = "overview";
+const F = {district:"",year:"",status:"",type:"",contractor:""};
+
+function options(key){
+  if(key==="district") return N.d.map((n,i)=>[i,n]).sort((a,b)=>a[1].localeCompare(b[1]));
+  if(key==="year") return [...new Set(C.map(c=>c.yr))].filter(Boolean).sort((a,b)=>b-a).map(y=>[y,y]);
+  if(key==="status") return [[1,T.status[1]],[0,T.status[0]]];
+  if(key==="type") return N.t.map((n,i)=>[i,n]).sort((a,b)=>a[1].localeCompare(b[1]));
+  if(key==="contractor"){ const v={}; C.forEach(c=>v[c.k]=(v[c.k]||0)+c.rb); return Object.keys(v).sort((a,b)=>v[b]-v[a]).map(k=>[k,N.k[k]]); }
+}
+function filtered(){
+  const keys = PAGES[page].filters;
+  return C.filter(c => keys.every(k => {
+    const v = F[k]; if(v==="") return true;
+    if(k==="district") return c.d==v; if(k==="year") return c.yr==v; if(k==="status") return c.act==v;
+    if(k==="type") return c.t==v; if(k==="contractor") return c.k==v; return true; }));
+}
+
+/* ---------- builders ---------- */
+function hbars(el, items, fmt, opts={}){
+  if(!items.length){ el.innerHTML = `<div class="empty">${T.noData}</div>`; return; }
+  const max = Math.max(...items.map(x=>x[1]), 1);
+  el.innerHTML = `<div class="hbars">` + items.map(([lb,v,key])=>
+    `<div class="hb" ${key!=null?`data-k="${key}"`:""} title="${esc(lb)}: ${fmt(v)}"><div class="lb">${esc(lb)}</div><div class="tr"><div class="br" style="width:${Math.max(v/max*100*.78,.4)}%"></div><span class="v">${fmt(v)}</span></div></div>`).join("") + `</div>`;
+  if(opts.onClick) el.querySelectorAll(".hb[data-k]").forEach(b=>b.onclick=()=>opts.onClick(b.dataset.k));
+}
+function vbars(el, items, fmt, opts={}){
+  const max = Math.max(...items.map(x=>x[1]), 1);
+  el.innerHTML = `<div class="vbars">` + items.map(([lb,v])=>
+    `<div class="vb" title="${esc(lb)}: ${fmt(v)}"><div class="br" style="height:${v/max*(opts.h||82)}%">${opts.labels===false?"":`<span>${fmt(v)}</span>`}</div><div class="x ${opts.rot?"rot":""}">${esc(lb)}</div></div>`).join("") + `</div>`;
+}
+function table(el, cols, rows, sortKey){
+  if(!rows.length){ el.innerHTML = `<div class="empty">${T.noData}</div>`; return; }
+  el.innerHTML = `<table><thead><tr>${cols.map(c=>`<th class="${c.num?"num":""}">${c.h}</th>`).join("")}</tr></thead><tbody>` +
+    rows.map(r=>`<tr>${cols.map(c=>`<td class="${c.num?"num":""} ${c.cls||""}" title="${esc(c.v(r))}">${c.f?c.f(r):esc(c.v(r))}</td>`).join("")}</tr>`).join("") + `</tbody></table>`;
+}
+function setKpis(subk, kpis){
+  $("subk").innerHTML = subk.map(([v,l])=>`<div>${v}<small>${l}</small></div>`).join("");
+  $("kpis").innerHTML = kpis.map(([v,l])=>`<div class="kpi"><b>${v}</b><small>${l}</small></div>`).join("");
+}
+function donut(el, part, total){
+  const p = total ? Math.max(0, Math.min(1, part/total)) : 0, r=62, cx=90, cy=82, L=2*Math.PI*r;
+  el.innerHTML = `<div class="donut"><svg width="300" height="170" viewBox="0 0 300 170">
+    <circle cx="${cx+60}" cy="${cy}" r="${r}" fill="none" stroke="#D9D5CC" stroke-width="20"/>
+    <circle cx="${cx+60}" cy="${cy}" r="${r}" fill="none" stroke="#F5C842" stroke-width="20" stroke-dasharray="${L*p} ${L}" transform="rotate(-90 ${cx+60} ${cy})"/>
+    <text x="${cx+60}" y="${cy+10}" text-anchor="middle" font-size="30" font-weight="300" fill="#1E1E1E" font-family="Heebo,Arial">${pct(p)}</text>
+    <text x="${cx+60}" y="${cy+r+30}" text-anchor="middle" font-size="11" fill="#6E6A62" font-family="Heebo,Arial">${money(part)} / ${money(total)}</text></svg></div>`;
+}
+function largestCard(el, title, label, sub, amount, a, al, b, bl){
+  el.innerHTML = `<div style="display:flex;flex-direction:column;gap:0;height:100%;border-radius:16px;overflow:hidden;background:var(--y)">
+    <div style="padding:10px 14px 0;font-size:15px;font-weight:500">${title}</div>
+    <div class="lc-top" style="font-size:${label.length>24?18:24}px;padding:6px 10px 8px">${esc(label)}</div>
+    ${sub?`<div class="lc-mid">${esc(sub)}</div>`:`<div style="height:6px;background:var(--bg)"></div>`}
+    <div class="lc-bot" style="flex:1"><div class="amt">${amount}</div><div><b>${a}</b>${al}</div><div><b>${b}</b>${bl}</div></div></div>`;
+}
+function setFilter(k, v){ F[k] = String(v); render(); }
+
+/* ---------- pages ---------- */
+function renderOverview(rows){
+  const rb=sum(rows,c=>c.rb), wtd=sum(rows,c=>c.wtd), paid=sum(rows,c=>c.paid);
+  const ids=new Set(rows.map(c=>c.i)); const subNames=new Set(); rows.forEach(c=>(SUBS_BY[c.i]||[]).forEach(s=>subNames.add(s[1])));
+  setKpis([[moneyB(paid),T.paid],[moneyB(rb-wtd),T.remaining],[pct(rb?paid/rb:NaN),T.paidPct]],
+    [[money(rb),T.revisedBid],[nf.format(subNames.size),T.subcontractors],[nf.format(new Set(rows.map(c=>c.k)).size),T.primes],[nf.format(rows.length),T.contracts]]);
+  const top = rows.slice().sort((a,b)=>b.rb-a.rb)[0];
+  if(top) largestCard($("o-largest"),T.largest,`${top.hw} · ${N.co[top.co]}`,N.k[top.k],moneyB(top.rb),pct(top.pcd/100),T.workDone,pct(top.ptu/100),T.timeUsed);
+  else $("o-largest").innerHTML = `<div class="card" style="height:100%"><div class="empty">${T.noData}</div></div>`;
+  const byY={}; rows.forEach(c=>{ if(c.yr) byY[c.yr]=(byY[c.yr]||0)+c.rb; });
+  vbars($("o-years"), Object.keys(byY).sort().map(y=>[y,byY[y]]), v=>money(v), {rot:true,h:72});
+  donut($("o-donut"), wtd, rb);
+  const act=rows.filter(c=>c.act);
+  $("o-active").textContent = pct(rows.length?act.length/rows.length:NaN);
+  $("o-risk").innerHTML = [[nf.format(rows.filter(isBehind).length),T.behind],[nf.format(act.filter(c=>c.ptu>100).length),T.pastDays],
+    [moneyB(sum(rows,c=>c.cho)),T.changeOrders],[money(-sum(rows,c=>c.ld)),T.damages]].map(([v,l])=>`<div>${v}<small>${l}</small></div>`).join("");
+  const byD={}; rows.forEach(c=>byD[c.d]=(byD[c.d]||0)+c.rb);
+  hbars($("o-districts"), Object.keys(byD).sort((a,b)=>byD[b]-byD[a]).map(d=>[N.d[d],byD[d],d]), money, {onClick:k=>setFilter("district",k)});
+  table($("o-table"), [
+    {h:T.contract,v:r=>r.num},{h:T.highway,v:r=>r.hw},{h:T.county,v:r=>N.co[r.co]},{h:T.prime,v:r=>N.k[r.k]},
+    {h:T.revisedBid,num:1,v:r=>moneyM(r.rb)},{h:T.complete,num:1,v:r=>pct(r.pcd/100)},{h:T.timeUsed,num:1,v:r=>pct(r.ptu/100)}],
+    rows.slice().sort((a,b)=>b.rb-a.rb).slice(0,60));
+  const bk=[0,0,0,0,0]; act.forEach(c=>{ if(c.wb>=1&&c.wb<=5) bk[c.wb-1]++; });
+  vbars($("o-buckets"), BUCKETS.map((b,i)=>[b,bk[i]]), v=>nf.format(v), {h:70});
+}
+function renderDistricts(rows){
+  const rb=sum(rows,c=>c.rb);
+  setKpis([], [[money(rows.length?rb/rows.length:0),T.avgPer],[nf.format(new Set(rows.map(c=>c.co)).size),T.counties],
+    [nf.format(new Set(rows.map(c=>c.ao)).size),T.areaOffices],[nf.format(new Set(rows.map(c=>c.d)).size),T.districtsN]]);
+  const g={}; rows.forEach(c=>{ const x=g[c.d]=g[c.d]||{d:c.d,n:0,rb:0,wtd:0,beh:0,cho:0}; x.n++; x.rb+=c.rb; x.wtd+=c.wtd; x.cho+=c.cho; if(isBehind(c)) x.beh++; });
+  const list=Object.values(g).sort((a,b)=>b.rb-a.rb);
+  const pal=["#1F1F1F","#F5C842","#8E8A82","#C9C5BC","#E2A80A","#3D3D3D","#B39A57","#5E5A53","#D8B95E","#A7A39A"];
+  $("d-tree").innerHTML = `<div class="tm">`+list.map((x,i)=>`<div style="flex:${x.rb} 1 0;background:${pal[i%pal.length]};color:${[1,3,4,6,8,9].includes(i%10)?"#1E1E1E":"#fff"}" title="${esc(N.d[x.d])}: ${money(x.rb)}" data-k="${x.d}">${esc(N.d[x.d])}<br>${money(x.rb)}</div>`).join("")+`</div>`;
+  $("d-tree").querySelectorAll("[data-k]").forEach(b=>b.onclick=()=>{ F.district=b.dataset.k; page="overview"; location.hash="overview"; render(); });
+  table($("d-table"), [
+    {h:T.district,v:r=>N.d[r.d]},{h:T.engineer,v:r=>N.de[r.d]||""},{h:T.contracts,num:1,v:r=>nf.format(r.n)},
+    {h:T.revisedBid,num:1,v:r=>moneyM(r.rb)},{h:T.pctComplete,num:1,v:r=>pct(r.rb?r.wtd/r.rb:NaN)},{h:T.behind,num:1,v:r=>r.beh||""},{h:T.changeOrders,num:1,v:r=>moneyM(r.cho)}], list);
+  const byT={}; rows.forEach(c=>byT[c.t]=(byT[c.t]||0)+c.rb);
+  hbars($("d-types"), Object.keys(byT).sort((a,b)=>byT[b]-byT[a]).map(t=>[N.t[t],byT[t],t]), v=>"$"+(v/1e9).toFixed(0)+"bn", {onClick:k=>setFilter("type",k)});
+  const byC={}; rows.forEach(c=>byC[c.co]=(byC[c.co]||0)+1);
+  hbars($("d-counties"), Object.keys(byC).sort((a,b)=>byC[b]-byC[a]).slice(0,40).map(k=>[N.co[k],byC[k]]), v=>nf.format(v));
+}
+function renderContractors(rows){
+  const rb=sum(rows,c=>c.rb); let subAmt=0, lines=0; const subN={}, subV={}, withSubs=new Set();
+  rows.forEach(c=>(SUBS_BY[c.i]||[]).forEach(s=>{ subAmt+=s[2]*c.rb; lines++; withSubs.add(c.i); subN[s[1]]=(subN[s[1]]||0)+1; subV[s[1]]=(subV[s[1]]||0)+s[2]*c.rb; }));
+  const g={}; rows.forEach(c=>{ const x=g[c.k]=g[c.k]||{k:c.k,n:0,rb:0,wtd:0,beh:0}; x.n++; x.rb+=c.rb; x.wtd+=c.wtd; if(isBehind(c)) x.beh++; });
+  const list=Object.values(g).sort((a,b)=>b.rb-a.rb);
+  const top10=sum(list.slice(0,10),x=>x.rb);
+  setKpis([[moneyB(subAmt),T.subcontracted],[moneyB(rb),T.revisedBid],[pct(rb?subAmt/rb:NaN),T.subShare]],
+    [[pct(rb?top10/rb:NaN),T.top10],[withSubs.size?(lines/withSubs.size).toFixed(1):"–",T.subsPer],[nf.format(Object.keys(subN).length),T.subcontractors],[nf.format(list.length),T.primes]]);
+  const t=list[0];
+  if(t) largestCard($("c-largest"),T.largestContractor,N.k[t.k],"",moneyB(t.rb),nf.format(t.n),T.contracts,pct(t.rb?t.wtd/t.rb:NaN),T.complete);
+  else $("c-largest").innerHTML = `<div class="card" style="height:100%"><div class="empty">${T.noData}</div></div>`;
+  table($("c-table"), [{h:T.contractor,v:r=>N.k[r.k]},{h:T.contracts,num:1,v:r=>nf.format(r.n)},{h:T.revisedBid,num:1,v:r=>moneyM(r.rb)},
+    {h:T.pctComplete,num:1,v:r=>pct(r.rb?r.wtd/r.rb:NaN)},{h:T.behind,num:1,v:r=>r.beh||""}], list.slice(0,80));
+  $("c-withsubs").textContent = pct(rows.length?withSubs.size/rows.length:NaN);
+  const dist=[0,0,0,0,0]; withSubs.forEach(i=>{ const n=SUBS_BY[i].length; dist[n<=1?0:n<=3?1:n<=6?2:n<=10?3:4]++; });
+  vbars($("c-dist"), [["1",dist[0]],["2–3",dist[1]],["4–6",dist[2]],["7–10",dist[3]],["11+",dist[4]]], v=>nf.format(v), {h:80});
+  hbars($("c-subval"), Object.keys(subV).sort((a,b)=>subV[b]-subV[a]).slice(0,30).map(s=>[N.s[s],subV[s]]), v=>"$"+(v/1e9).toFixed(2)+"bn");
+  hbars($("c-subcount"), Object.keys(subN).sort((a,b)=>subN[b]-subN[a]).slice(0,40).map(s=>[N.s[s],subN[s]]), v=>nf.format(v));
+}
+function renderSchedule(rows){
+  const act=rows.filter(c=>c.act); const n=act.length||NaN;
+  const avgA=sum(act,c=>c.da)/n, avgC=sum(act,c=>c.dc)/n, avgG=sum(act,c=>c.dg)/n;
+  setKpis([[isFinite(avgC)?Math.round(avgC):"–",T.daysUsed],[isFinite(avgA)?Math.round(avgA-avgC):"–",T.daysRemaining]],
+    [[isFinite(avgG)?Math.round(avgG):"–",T.avgExt],[isFinite(avgA)?Math.round(avgA):"–",T.avgAllowed],[nf.format(act.filter(c=>c.ptu>100).length),T.pastAllowed],[nf.format(rows.filter(isBehind).length),T.behind]]);
+  const H=[...Array(5)].map(()=>[0,0,0,0,0]); act.forEach(c=>{ if(c.tb>=1&&c.tb<=5&&c.wb>=1&&c.wb<=5) H[5-c.tb][c.wb-1]++; }); // Time Bucket Order: 1 = 100%+ … 5 = 0–25%
+  const mx=Math.max(1,...H.flat());
+  const col=(r,c,v)=>{ const a=.18+.82*Math.sqrt(v/mx); if(r>c) return [`rgba(226,168,10,${a})`, a>.6?"#1E1E1E":"#1E1E1E"]; if(r===c) return [`rgba(31,31,31,${a})`, a>.45?"#fff":"#1E1E1E"]; return [`rgba(119,115,107,${a})`, a>.6?"#fff":"#1E1E1E"]; };
+  let h=`<div class="heat"><div class="h">${T.timeUsed}</div>${BUCKETS.map(b=>`<div class="hc">${b}</div>`).join("")}`;
+  for(let r=4;r>=0;r--){ h+=`<div class="h">${BUCKETS[r]}</div>`; for(let c=0;c<5;c++){ const v=H[r][c]; const [bg,fg]=col(r,c,v); h+=`<div class="c" style="background:${v?bg:"#F1EEE8"};color:${fg}" title="${T.timeUsed} ${BUCKETS[r]} · ${T.workDone} ${BUCKETS[c]}: ${v}">${v||""}</div>`; } }
+  $("s-heat").innerHTML = h+"</div>";
+  const byM={}; rows.forEach(c=>{ if(c.let>="2025-01") byM[c.let]=(byM[c.let]||0)+1; });
+  vbars($("s-months"), Object.keys(byM).sort().map(m=>[m,byM[m]]), v=>nf.format(v), {rot:true,labels:false,h:70});
+  $("s-ext").innerHTML = `<div class="ext"><div class="amt"><b>${money(-sum(rows,c=>c.ld))}</b></div><div><b>${nf.format(sum(act,c=>c.dg))}</b><small>${T.extDays}</small></div><div><b>${nf.format(act.filter(c=>c.dg>0).length)}</b><small>${T.extended}</small></div><div><b>${nf.format(rows.filter(c=>c.ld!==0).length)}</b><small>${T.withDamages}</small></div></div>`;
+  table($("s-table"), [{h:T.contract,v:r=>r.num},{h:T.highway,v:r=>r.hw,cls:"hw"},{h:T.county,v:r=>N.co[r.co]},{h:T.bid,num:1,v:r=>moneyM(r.rb)},
+    {h:T.complete,num:1,v:r=>pct(r.pcd/100)},{h:T.timeUsed,num:1,v:r=>pct(r.ptu/100)}], rows.filter(isBehind).sort((a,b)=>b.rb-a.rb).slice(0,80));
+}
+
+/* ---------- shell ---------- */
+function renderShell(){
+  $("brand").textContent = T.brand;
+  $("lang").textContent = T.langBtn;
+  $("lang").href = OTHER + "#" + page;
+  $("tabs").innerHTML = Object.keys(PAGES).map(p=>`<button class="tab ${p===page?"on":""}" data-p="${p}">${T.pages[p]}</button>`).join("");
+  $("tabs").querySelectorAll(".tab").forEach(b=>b.onclick=()=>{ page=b.dataset.p; history.replaceState(null,"","#"+page); render(); });
+  $("filters").innerHTML = PAGES[page].filters.map(k=>`<div class="flt"><label>${T.f[k]}</label><select data-f="${k}"><option value="">${T.all}</option>${options(k).map(([v,l])=>`<option value="${v}" ${String(F[k])===String(v)?"selected":""}>${esc(l)}</option>`).join("")}</select></div>`).join("");
+  $("filters").querySelectorAll("select").forEach(s=>s.onchange=()=>setFilter(s.dataset.f, s.value));
+  $("crumb").textContent = T.crumbs[page];
+  $("title").textContent = T.titles[page];
+  document.querySelectorAll("[data-t]").forEach(e=>e.textContent=T[e.dataset.t]);
+  document.querySelectorAll(".page").forEach(p=>p.classList.toggle("on", p.id==="p-"+page));
+  $("foot").textContent = T.foot + N.asof;
+}
+function render(){
+  renderShell();
+  const rows = filtered();
+  ({overview:renderOverview,districts:renderDistricts,contractors:renderContractors,schedule:renderSchedule})[page](rows);
+}
+function fit(){
+  const s = Math.min(window.innerWidth/1600, window.innerHeight/900);
+  const st = $("stage"); st.style.transform = `scale(${s})`;
+  const off = (window.innerWidth - 1600*s)/2;
+  if(LANG==="he"){ st.style.right = off+"px"; } else { st.style.left = off+"px"; }
+}
+window.addEventListener("resize", fit);
+window.addEventListener("hashchange", ()=>{ const p=location.hash.replace("#",""); if(PAGES[p]&&p!==page){ page=p; render(); } });
+fit(); render();
+</script>
+</body>
+</html>

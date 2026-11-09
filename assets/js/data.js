@@ -63,11 +63,18 @@ window.SITE_DATA = {
           result: "48 products tracked; 14 shelf gaps and 19 items below reorder point flagged automatically, with 16.5 days of average stock cover.",
           chips: ["Power BI", "DAX", "RTL / Hebrew"],
           embedUrl: "dashboards/inventory-he.html" },
-        { label: "Project 3", title: "Nadlan — TxDOT Construction Contracts (EN / HE)", image: "assets/img/projects/nadlan-txdot-en.jpg", images: ["assets/img/projects/nadlan-txdot-en.jpg", "assets/img/projects/nadlan-txdot-he.jpg"], imageAlt: "Texas DOT construction contracts dashboard — portfolio KPIs, bids by year and risk signals",
+        { label: "Project 3", title: "Nadlan — TxDOT Construction Contracts (English)", image: "assets/img/projects/nadlan-txdot-en.jpg", imageAlt: "Texas DOT construction contracts dashboard in English — portfolio KPIs, bids by year and risk signals",
           problem: "follow a $47.7bn portfolio of 3,151 Texas DOT road-construction contracts — progress, payments and delays.",
-          approach: "bilingual report (English + Hebrew RTL, one-click language switch) with 4 pages: overview, districts, contractors and schedule; risk signals for contracts behind schedule, change orders and damages.",
+          approach: "4 pages: overview, districts, contractors and schedule; risk signals for contracts behind schedule, change orders and damages.",
           result: "64.2% of the revised bid completed ($30.6bn paid); 664 contracts behind schedule surfaced, with drill-down by district and prime contractor.",
-          chips: ["Power BI", "DAX", "Bilingual EN/HE"] }
+          chips: ["Power BI", "DAX", "English"],
+          embedUrl: "dashboards/nadlan-en.html" },
+        { label: "Project 4", title: "Nadlan — TxDOT Construction Contracts (Hebrew)", image: "assets/img/projects/nadlan-txdot-he.jpg", imageAlt: "Texas DOT construction contracts dashboard in Hebrew (RTL)",
+          problem: "the same contract portfolio for Hebrew-speaking managers, with a full right-to-left layout.",
+          approach: "Hebrew RTL version of the report: translated labels, mirrored layout, same 4 pages and filters.",
+          result: "one data model serving two languages; the same KPIs and risk signals in Hebrew.",
+          chips: ["Power BI", "DAX", "RTL / Hebrew"],
+          embedUrl: "dashboards/nadlan-he.html" }
       ]
     },
     {
