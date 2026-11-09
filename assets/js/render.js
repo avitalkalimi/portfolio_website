@@ -245,12 +245,6 @@
 
   function renderTopicProjects(topic) {
     var rows = topic.projects.map(function (project, rowIndex) {
-      var image = project.images && project.images.length > 1
-        ? renderCarousel(project.images, project.imageAlt, rowIndex, "project")
-        : renderImageSlot("project", project.image, project.imageAlt, false);
-      var chips = project.chips.map(function (chip) {
-        return el("span", { className: "chip" }, [chip]);
-      });
       var facts = el("div", { className: "project-row__facts" }, [
         el("div", {}, [el("b", {}, ["Problem — "]), project.problem]),
         el("div", {}, [el("b", {}, ["Approach — "]), project.approach]),
@@ -259,10 +253,15 @@
       var text = el("div", {}, [
         el("div", { className: "project-row__label" }, [project.label]),
         el("div", { className: "project-row__title" }, [project.title]),
-        facts,
-        el("div", { className: "chip-row" }, chips)
+        facts
       ]);
-      var children = [image, text];
+      // A project with a live dashboard shows only the dashboard, not a screenshot as well.
+      var children = [text];
+      if (!project.embedUrl) {
+        children.unshift(project.images && project.images.length > 1
+          ? renderCarousel(project.images, project.imageAlt, rowIndex, "project")
+          : renderImageSlot("project", project.image, project.imageAlt, false));
+      }
       if (project.embedUrl) {
         children.push(el("div", { className: "project-embed" }, [
           el("div", { className: "project-embed__frame" }, [
@@ -281,7 +280,7 @@
           }, ["Open full screen →"])
         ]));
       }
-      return el("div", { className: "project-row" }, children);
+      return el("div", { className: "project-row" + (project.embedUrl ? " project-row--embed" : "") }, children);
     });
     return el("div", { className: "topic-projects" }, rows);
   }
